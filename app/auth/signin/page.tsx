@@ -6,17 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getUser } from "@/lib/lucia";
+import { getUserSession } from "@/lib/lucia";
 import { redirect } from 'next/navigation'
 
 export default async function SignIn() {
 
-  const { user } = await getUser()
+  const { user } = await getUserSession()
 
   if (user) {
     return redirect("/")
   }
-
 
   return (
     <div className="h-screen flex items-center justify-center">

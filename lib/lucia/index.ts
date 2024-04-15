@@ -12,7 +12,7 @@ export const lucia = new Lucia(adapter, {
   },
 })
 
-export const getUser = cache(async () => {
+export const getUserSession = cache(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null
 
   if (!sessionId)

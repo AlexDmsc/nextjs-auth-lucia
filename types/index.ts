@@ -29,5 +29,7 @@ export const SignInSchema = z.object({
     .string()
     .email({ message: "Invalid email format" })
     .min(5, { message: "Email must be at least 5 characters." }),
-  password: z.string(),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
 });

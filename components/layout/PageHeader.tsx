@@ -1,6 +1,7 @@
 import { NavigationBar } from "@/components/layout/NavigationBar";
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import SearchBar from "@/components/layout/SearchBar";
+import { Profile } from "@/components/layout/Profile";
 
 export function Header() {
   return (
@@ -13,6 +14,7 @@ export function Header() {
               <SearchBar />
             </div>
             <ModeToggle />
+            <Profile />
           </nav>
         </div>
       </div>

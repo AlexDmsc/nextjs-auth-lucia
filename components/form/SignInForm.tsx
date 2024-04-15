@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Form,
   FormControl,
@@ -15,16 +14,20 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 export function SignInForm() {
-
   const router = useRouter();
 
   type SignInSchemaType = z.infer<typeof SignInSchema>;
 
   const form = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const {
@@ -34,10 +37,19 @@ export function SignInForm() {
   } = form;
 
   const handleSignIn: SubmitHandler<SignInSchemaType> = async (data) => {
-    const user = await signIn(data);
+    const res = await signIn(data);
+    if (res.error) {
+      toast({
+        variant: "destructive",
+        description: res.error,
+      });
+    } else if (res.success) {
+      toast({
+        variant: "default",
+        description: "Signed in successfully",
+      });
 
-    if (user.success) {
-      return router.push("/");
+      router.push("/");
     }
   };
 
@@ -68,6 +80,9 @@ export function SignInForm() {
               <FormControl>
                 <Input type="password" {...register("password")} required />
               </FormControl>
+              {errors.password && (
+                <FormMessage>{errors.password.message}</FormMessage>
+              )}
             </FormItem>
             <div className="flex items-center">
               <Link href="#" className="ml-auto inline-block text-sm underline">

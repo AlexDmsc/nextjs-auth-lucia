@@ -6,7 +6,7 @@ import { Argon2id } from "oslo/password";
 import { generateId } from "lucia";
 import db from "@/lib/database/db";
 import { userTable } from "@/lib/database/schema";
-import { lucia, getUser } from "@/lib/lucia";
+import { lucia, getUserSession } from "@/lib/lucia";
 import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";
 
@@ -104,7 +104,7 @@ export const signIn = async (data: z.infer<typeof SignInSchema>) => {
 export const signOut = async () => {
 
   try {
-    const session = await getUser();
+    const session = await getUserSession();
 
   if (!session) {
     return {
@@ -127,4 +127,22 @@ export const signOut = async () => {
     };
   }
 
+}
+
+export const resetPassword = async (email: string) => {
+  const user = await db.query.userTable.findFirst({
+    where: (table) => eq(table.email, email),
+  });
+
+  if (!user) {
+    return {
+      error: "User not found",
+    };
+  }
+
+  // Send password reset link to user email
+
+  return {
+    success: "Password reset link sent to your email",
+  };
 }
