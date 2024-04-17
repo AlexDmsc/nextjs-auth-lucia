@@ -62,7 +62,7 @@ export function SignInForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="j@example.com"
+                  placeholder="Enter your email address"
                   {...register("email")}
                   required
                 />
@@ -85,7 +85,7 @@ export function SignInForm() {
               )}
             </FormItem>
             <div className="flex items-center">
-              <Link href="#" className="ml-auto inline-block text-sm underline">
+              <Link href="/auth/password_reset" className="ml-auto inline-block text-sm underline">
                 Forgot your password?
               </Link>
             </div>
