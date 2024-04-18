@@ -85,7 +85,7 @@ export function SignInForm() {
               )}
             </FormItem>
             <div className="flex items-center">
-              <Link href="/auth/password_reset" className="ml-auto inline-block text-sm underline">
+              <Link href="/auth/password-reset" className="ml-auto inline-block text-sm underline">
                 Forgot your password?
               </Link>
             </div>

@@ -5,10 +5,14 @@ import { SignInSchema } from "@/types/index";
 import { Argon2id } from "oslo/password";
 import { generateId } from "lucia";
 import db from "@/lib/database/db";
-import { userTable } from "@/lib/database/schema";
+import { userTable, resetPasswordTable } from "@/lib/database/schema";
 import { lucia, getUserSession } from "@/lib/lucia";
 import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";
+import { TimeSpan, createDate } from "oslo";
+import { sha256 } from "oslo/crypto";
+import { encodeHex } from "oslo/encoding";
+import { complitePasswordResetTemplate, sendEmail } from "@/lib/mail";
 
 export const signUp = async (data: z.infer<typeof SignUpSchema>) => {
   const hashedPassword = await new Argon2id().hash(data.password);
@@ -102,32 +106,30 @@ export const signIn = async (data: z.infer<typeof SignInSchema>) => {
 };
 
 export const signOut = async () => {
-
   try {
     const session = await getUserSession();
 
-  if (!session) {
-    return {
-      error: "No session found",
-    };
-  }
+    if (!session) {
+      return {
+        error: "No session found",
+      };
+    }
 
-  await lucia.invalidateSession(session.id);
+    await lucia.invalidateSession(session.id);
 
-  const sessionCookie = lucia.createBlankSessionCookie();
+    const sessionCookie = lucia.createBlankSessionCookie();
 
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes
-  )
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
   } catch (error: any) {
     return {
       error: error?.message,
     };
   }
-
-}
+};
 
 export const resetPassword = async (email: string) => {
   const user = await db.query.userTable.findFirst({
@@ -140,9 +142,49 @@ export const resetPassword = async (email: string) => {
     };
   }
 
-  // Send password reset link to user email
+  const verificationToken = await createPasswordResetToken(user);
+  const verificationLink = `${process.env.PUBLIC_URL}/auth/password-reset/${verificationToken}`;
+
+  await sendEmail({
+    to: user.email,
+    subject: "Reset your password",
+    body: complitePasswordResetTemplate(user.firstName, verificationLink),
+  });
 
   return {
-    success: "Password reset link sent to your email",
+    success: true,
+    message: "Password reset email sent",
   };
+};
+
+async function createPasswordResetToken(user: User): Promise<string> {
+  const tableId = generateId(15);
+  const tokenId = generateId(40);
+  const tokenHash = encodeHex(await sha256(new TextEncoder().encode(tokenId)));
+
+  await db.insert(resetPasswordTable).values({
+    id: tableId,
+    tokenHash: tokenHash,
+    userId: user.id,
+    expiresAt: createDate(new TimeSpan(2, "h")),
+  });
+
+  return tokenId;
 }
+
+export const updatePassword = async (userId: string, password: string) => {
+  try {
+    const hashedPassword = await new Argon2id().hash(password);
+    await db
+      .update(userTable)
+      .set({ password: hashedPassword })
+      .where(eq(userTable.id, userId));
+
+    return {
+      success: true,
+      message: "Password updated",
+    };
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

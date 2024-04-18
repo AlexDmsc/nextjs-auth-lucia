@@ -29,3 +29,18 @@ export const sessionTable = mysqlTable("session", {
     .references(() => userTable.id),
   expiresAt: datetime("expires_at").notNull(),
 });
+
+export const resetPasswordTable = mysqlTable("reset_password_token", {
+  id: varchar("id", {
+    length: 255,
+  }).primaryKey(),
+  tokenHash: varchar("token_hash", {
+    length: 255,
+  }).notNull(),
+  userId: varchar("user_id", {
+    length: 255,
+  })
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: datetime("expires_at").notNull(),
+});
