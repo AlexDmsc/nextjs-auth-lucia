@@ -1,4 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Next.js 14 with Lucia & Shadcn: Authentication & Password Reset
+### Overview
+This project integrates Next.js 14, Lucia, and Shadcn to provide a robust authentication system with password reset capabilities. It's designed for developers looking for a modern authentication solution leveraging the speed of Next.js and the simplicity of Lucia with the security features of Shadcn.
+
+#### Features
+- User Authentication: Secure login and registration workflows. 
+- Password Reset: Allows users to safely reset their passwords.
+- [Next.js 14](https://nextjs.org/docs#what-is-nextjs): Utilizes the latest features of Next.js for optimized frontend performance.
+- [Lucia](https://lucia-auth.com/): Simplifies authentication patterns while maintaining flexibility.
+- [Shadcn](https://shadcn.rails-components.com/docs): Enhances security measures for authentication processes.
 
 ## Getting Started
 
