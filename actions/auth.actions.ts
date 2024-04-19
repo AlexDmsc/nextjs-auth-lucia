@@ -171,20 +171,3 @@ async function createPasswordResetToken(user: User): Promise<string> {
 
   return tokenId;
 }
-
-export const updatePassword = async (userId: string, password: string) => {
-  try {
-    const hashedPassword = await new Argon2id().hash(password);
-    await db
-      .update(userTable)
-      .set({ password: hashedPassword })
-      .where(eq(userTable.id, userId));
-
-    return {
-      success: true,
-      message: "Password updated",
-    };
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-};

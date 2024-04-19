@@ -19,7 +19,6 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { updatePassword } from "@/actions/auth.actions";
 import { useRouter, useParams } from "next/navigation";
 
 export default function ResetPasswordToken() {
@@ -43,22 +42,18 @@ export default function ResetPasswordToken() {
   } = form;
 
   const onSubmit: SubmitHandler<PasswordResetSchemaType> = async (data) => {
-    console.log(params.token);
 
-    const response = await fetch(`/api/password-reset/token`, {
+    const response = await fetch(`/api/password-reset/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: data.password }),
+      referrerPolicy: "no-referrer",
+      body: JSON.stringify({tokenId : params.token, password: data.password}),
     });
 
     if (response.status === 200) {
-      await updatePassword(response.user, data.password);
-      router.push("/");
-    } else {
-      const error = await response.json();
-      console.error(error);
+      router.push("/auth/signin");
     }
   };
 

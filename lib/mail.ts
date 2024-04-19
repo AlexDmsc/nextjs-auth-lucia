@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 export async function sendEmail({
   to,
   subject,
-  body
+  body,
 }: {
   to: string;
   subject: string;
@@ -24,9 +24,9 @@ export async function sendEmail({
   try {
     await transporter.sendMail({
       from: process.env.SMTP_EMAIL, //
-      to: to, 
-      subject: subject, 
-      html: body, 
+      to: to,
+      subject: subject,
+      html: body,
     });
   } catch (error) {
     console.log(error);
