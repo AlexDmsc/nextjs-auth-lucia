@@ -13,7 +13,7 @@ This project integrates Next.js 14, Lucia, and Shadcn to provide a robust authen
 - Drizzle ORM: Object-relational mapping library to manage database interactions.
 - Mysql2: MySQL client for Node.js with focus on performance.
 
-### Package 
+#### Package 
 - React Hook Form with zod: Handling integrated with Zod for schema validation.
 - Tailwind CSS : Tailwind CSS: Utility-first CSS framework for rapid UI development.
 - Mailer with node mailer : Handling email sending functionalities with NodeMailer.
