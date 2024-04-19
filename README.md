@@ -5,9 +5,19 @@ This project integrates Next.js 14, Lucia, and Shadcn to provide a robust authen
 #### Features
 - User Authentication: Secure login and registration workflows. 
 - Password Reset: Allows users to safely reset their passwords.
-- [Next.js 14](https://nextjs.org/docs#what-is-nextjs): Utilizes the latest features of Next.js for optimized frontend performance.
+- [Next.js 14](https://nextjs.org/docs#what-is-nextjs): the latest features of Next.js.
 - [Lucia](https://lucia-auth.com/): Simplifies authentication patterns while maintaining flexibility.
 - [Shadcn](https://shadcn.rails-components.com/docs): Enhances security measures for authentication processes.
+
+#### Database
+- Drizzle ORM: Object-relational mapping library to manage database interactions.
+- Mysql2: MySQL client for Node.js with focus on performance.
+
+### Package 
+- React Hook Form with zod: Handling integrated with Zod for schema validation.
+- Tailwind CSS : Tailwind CSS: Utility-first CSS framework for rapid UI development.
+- Mailer with node mailer : Handling email sending functionalities with NodeMailer.
+
 
 ## Getting Started
 
